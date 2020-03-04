@@ -32,6 +32,8 @@ defmodule Xray do
     Input String: cät
     Character Count: 3
     Byte Count: 4
+    Is valid? true
+    Is printable? true
     ======================================================
 
     c   Codepoint: 99 (\\u0063) https://codepoints.net/U+0063
@@ -57,7 +59,7 @@ defmodule Xray do
   def inspect(value) when is_binary(value) do
     value
     |> heading()
-    |> String.split("", trim: true)
+    |> String.codepoints()
     |> Enum.map(&character_profile/1)
   end
 
@@ -67,6 +69,8 @@ defmodule Xray do
     IO.puts("Input String: #{value}")
     IO.puts("Character Count: #{String.length(value)}")
     IO.puts("Byte Count: #{byte_size(value)}")
+    IO.puts("Is valid? #{String.valid?(value)}")
+    IO.puts("Is printable? #{String.printable?(value)}")
     IO.puts("======================================================")
     value
   end
@@ -80,6 +84,7 @@ defmodule Xray do
         "   Codepoint: #{codepoint(x)} (\\u#{codepoint(x, as_hex: true)}) #{link(x)}"
     )
 
+    IO.puts(indent("Is printable? #{String.printable?(x)}"))
     IO.puts(indent("Script(s): #{Enum.join(Unicode.script(x), ",")}"))
     IO.puts(indent("Byte Count: #{byte_size(x)}"))
     IO.inspect(x, binaries: :as_binaries, label: "    UTF-8")
@@ -87,7 +92,11 @@ defmodule Xray do
   end
 
   defp character_heading(x) do
-    IO.ANSI.bright() <> x <> IO.ANSI.reset()
+    case String.printable?(x) do
+      true -> IO.ANSI.bright() <> x <> IO.ANSI.reset()
+      _ -> IO.ANSI.bright() <> "�" <> IO.ANSI.reset()
+    end
+
   end
 
   @doc """
@@ -126,19 +135,23 @@ defmodule Xray do
   component *characters* like `String.codepoints/1` does, this function
   returns the *numbers* (which is what code points are).
 
+  Note that this function returns a string: if a list is returned, it will be
+  automatically displayed as a
   ## Options
     - `:as_hex` (see `codepoint/2`)
 
   ## Examples
       iex> Xray.codepoints("cät")
-      [99, 228, 116]
+      "99, 228, 116"
   """
   @spec codepoints(string :: binary, opts :: keyword) :: list
   def codepoints(string, opts \\ []) when is_binary(string) do
     string
-    |> String.split("", trim: true)
-    |> Enum.reduce([], fn x, acc -> [codepoint(x, opts) | acc] end)
-    |> Enum.reverse()
+    |> String.codepoints()
+    |> Enum.map(fn x -> codepoint(x, opts) end)
+    |> Enum.join(", ")
+    # We want to see the numbers!!!
+    #    IO.inspect(x, charlists: :as_lists)
   end
 
   # Converts a character like ä to its hexidecimal representation like `00E4`
