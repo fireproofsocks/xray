@@ -172,9 +172,17 @@ defmodule Xray do
     IO.ANSI.blue() <> "https://codepoints.net/#{slug}" <> IO.ANSI.reset()
   end
 
-  defp to_base2(x) do
+  defp to_base2(x) when is_binary(x) do
     base2 = Base2.encode2(x, padding: :all)
     parse_bytes(base2, "") <> IO.ANSI.reset()
+  end
+
+  def base2(x) do
+
+  end
+
+  def base16(x) do
+
   end
 
   # Some nice formatting of the base2 representation highlighting the control bits that
