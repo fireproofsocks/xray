@@ -55,7 +55,7 @@ defmodule Xray do
         Base2: 01110100
     ```
   """
-  @spec inspect(value :: binary) :: String.t
+  @spec inspect(value :: binary) :: String.t()
   def inspect(value) when is_binary(value) do
     value
     |> heading()
@@ -96,7 +96,6 @@ defmodule Xray do
       true -> IO.ANSI.bright() <> x <> IO.ANSI.reset()
       _ -> IO.ANSI.bright() <> "�" <> IO.ANSI.reset()
     end
-
   end
 
   @doc """
@@ -115,9 +114,9 @@ defmodule Xray do
   websites like [codepoints.net](https://codepoints.net/).
 
   ## Examples
-      iex> codepoint("ä")
+      iex> Xray.codepoint("ä")
       228
-      iex> codepoint("ä", as_hex: true)
+      iex> Xray.codepoint("ä", as_hex: true)
       "00E4"
   """
   @spec codepoint(binary, opts :: keyword) :: integer | String.t()
@@ -150,6 +149,7 @@ defmodule Xray do
     |> String.codepoints()
     |> Enum.map(fn x -> codepoint(x, opts) end)
     |> Enum.join(", ")
+
     # We want to see the numbers!!!
     #    IO.inspect(x, charlists: :as_lists)
   end
@@ -178,11 +178,9 @@ defmodule Xray do
   end
 
   def base2(x) do
-
   end
 
   def base16(x) do
-
   end
 
   # Some nice formatting of the base2 representation highlighting the control bits that

@@ -49,12 +49,13 @@ defmodule Xray.MixProject do
       "Changelog" => "https://github.com/fireproofsocks/xray/blob/v#{@version}/CHANGELOG.md"
     }
   end
+
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
       {:base2, "~> 0.1.0"},
-      {:ex_unicode, "~> 1.0"},
-      {:ex_doc, "~> 0.21.2", only: :dev, runtime: false}
+      {:ex_unicode, "~> 1.11.0"},
+      {:ex_doc, "~> 0.23.0", runtime: false}
     ]
   end
 end
