@@ -177,12 +177,6 @@ defmodule Xray do
     parse_bytes(base2, "") <> IO.ANSI.reset()
   end
 
-  def base2(x) do
-  end
-
-  def base16(x) do
-  end
-
   # Some nice formatting of the base2 representation highlighting the control bits that
   # flag multi-byte characters in UTF-8.
   # Start of 4-byte encoding of codepoint
