@@ -1,7 +1,7 @@
 defmodule Xray.MixProject do
   use Mix.Project
 
-  @version "1.1.1"
+  @version "1.2.0"
 
   def project do
     [
@@ -14,8 +14,10 @@ defmodule Xray.MixProject do
       deps: deps(),
       package: package(),
       docs: [
+        main: "readme",
         source_ref: "v#{@version}",
-        logo: "logo.png"
+        logo: "logo.png",
+        extras: ["README.md"]
       ]
     ]
   end
@@ -28,7 +30,7 @@ defmodule Xray.MixProject do
   defp package do
     [
       maintainers: ["Everett Griffiths"],
-      licenses: ["Apache 2.0"],
+      licenses: ["Apache-2.0"],
       logo: "logo.png",
       links: links(),
       files: [
@@ -54,8 +56,8 @@ defmodule Xray.MixProject do
   defp deps do
     [
       {:base2, "~> 0.1.0"},
-      {:ex_unicode, "~> 1.11.0"},
-      {:ex_doc, "~> 0.23.0", runtime: false}
+      {:ex_unicode, "~> 1.12.0"},
+      {:ex_doc, "~> 0.28.3", runtime: false}
     ]
   end
 end

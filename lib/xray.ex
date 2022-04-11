@@ -131,17 +131,31 @@ defmodule Xray do
   Given a string binary, this returns a list of the codepoints that represent
   each of the characters in the string. This is what you might expect
   `String.codepoints/1` to return, but instead of returning a list of the
-  component *characters* like `String.codepoints/1` does, this function
-  returns the *numbers* (which is what code points are).
+  component *characters*, this function returns the *numbers* (which is what
+  code points are).
 
-  Note that this function returns a string: if a list is returned, it will be
-  automatically displayed as a
+  Note that this function returns a *string*: if a list is returned, Elixir will
+  usually attempt to format it as a human-readable string, which defeats the
+  purpose of the inspection.
+
+  This function offers output similar to what `IO.inspect/2` when the `:as_lists`
+  option set to `true`
+
   ## Options
-    - `:as_hex` (see `codepoint/2`)
+
+  - `:as_hex` (see `codepoint/2`)
 
   ## Examples
+
       iex> Xray.codepoints("cät")
       "99, 228, 116"
+
+  Compare this to inspecting a single-quoted charlist:
+
+      iex> IO.inspect('cät', charlists: :as_lists)
+      [99, 228, 116]
+
+  But `IO.inspect` will send output to STDOUT.
   """
   @spec codepoints(string :: binary, opts :: keyword) :: list
   def codepoints(string, opts \\ []) when is_binary(string) do
@@ -149,9 +163,6 @@ defmodule Xray do
     |> String.codepoints()
     |> Enum.map(fn x -> codepoint(x, opts) end)
     |> Enum.join(", ")
-
-    # We want to see the numbers!!!
-    #    IO.inspect(x, charlists: :as_lists)
   end
 
   # Converts a character like ä to its hexidecimal representation like `00E4`
