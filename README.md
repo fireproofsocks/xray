@@ -10,6 +10,8 @@ Xray is an academic exploration of strings and encodings in [Elixir](https://eli
 
 It offers utility functions useful for inspecting strings and their code points to better understand strings and encodings.
 
+See the [related article on Medium](https://betterprogramming.pub/string-encodings-decoded-4818b4e30cb3).
+
 ## Examples
 
 The `Xray.inspect/1` function gives you a deep introspection on a string:
